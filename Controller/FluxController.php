@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class FluxController extends Controller
 {
     /**
-     * @Route("/flux.rss")
+     * @Route("/flux.rss", name="flux_rss")
      */
     public function generateAction()
     {
