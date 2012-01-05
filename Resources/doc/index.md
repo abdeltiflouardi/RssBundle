@@ -34,16 +34,6 @@ Add in your file app/autoload.php
 Configuration
 =============
 
-params
--------
-
-* **path**: this is path where you want to save sitemap file
-* **entity**: Use this entity to generate my file
-* **loc**: this is a sitemap tag. we can use our route to generate link.
-* **lastmod**: use this param to generate lastmod tag
-* **priority**: priority
-
-
 example
 -------
 
