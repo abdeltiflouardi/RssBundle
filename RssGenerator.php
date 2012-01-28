@@ -38,6 +38,13 @@ class RssGenerator
             $channel->appendChild($elem);
         }
 
+	$elem = $this->dom->createElement('atom:link');
+	$elem->setAttribute('href', $this->configs['link']);
+	$elem->setAttribute('rel', 'self');
+	$elem->setAttribute('type', 'application/rss+xml');
+
+	$channel->appendChild($elem);
+
         // Channel items
         $this->bindItems($channel);
 
@@ -103,7 +110,8 @@ class RssGenerator
         $this->dom->substituteEntities = false;
 
         $rss = $this->dom->createElement('rss');
-        $rss->setAttribute('version', '2.0');        
+        $rss->setAttribute('version', '2.0');
+	$rss->setAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');        
         $this->bindChannel($rss);
 
         $this->dom->appendChild($rss);
