@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManager,
  */
 class RssGenerator
 {
+
     private $em;
     private $dom;
     private $configs;
@@ -38,17 +39,17 @@ class RssGenerator
             $channel->appendChild($elem);
         }
 
-	$elem = $this->dom->createElement('atom:link');
-	$elem->setAttribute('href', $this->configs['link']);
-	$elem->setAttribute('rel', 'self');
-	$elem->setAttribute('type', 'application/rss+xml');
+        $elem = $this->dom->createElement('atom:link');
+        $elem->setAttribute('href', $this->configs['link']);
+        $elem->setAttribute('rel', 'self');
+        $elem->setAttribute('type', 'application/rss+xml');
 
-	$channel->appendChild($elem);
+        $channel->appendChild($elem);
 
         // Channel items
         $this->bindItems($channel);
 
-        $rss->appendChild($channel);        
+        $rss->appendChild($channel);
     }
 
     public function bindItems($channel)
@@ -70,12 +71,12 @@ class RssGenerator
             }
             $channel->appendChild($item);
         }
-    }    
-    
+    }
+
     public function getItemTagValue($entity, $tag)
     {
         $itemConfigs = $this->configs['item'];
-        
+
         if (!is_array($itemConfigs[$tag])) {
             $value = $entity->{'get' . ucfirst($itemConfigs[$tag])}();
 
@@ -88,21 +89,21 @@ class RssGenerator
             return $value;
         } else {
             extract($itemConfigs[$tag]);
-            
+
             foreach ($params as $key => $param) {
                 if (is_array($param)) {
-                    $value = $entity->{'get' . ucfirst($param['field'])}();
-                    $object = new $param['class'];
+                    $value        = $entity->{'get' . ucfirst($param['field'])}();
+                    $object       = new $param['class'];
                     $params[$key] = $object->{$param['method']}($value);
                 } else {
-                    $value = $entity->{'get' . ucfirst($param)}();
+                    $value        = $entity->{'get' . ucfirst($param)}();
                     $params[$key] = $value;
                 }
             }
             return $this->router->generate($route, $params, true);
         }
     }
-    
+
     public function getContent()
     {
         $this->dom = new DOMDocument('1.0', 'UTF-8');
@@ -111,7 +112,7 @@ class RssGenerator
 
         $rss = $this->dom->createElement('rss');
         $rss->setAttribute('version', '2.0');
-	$rss->setAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');        
+        $rss->setAttribute('xmlns:atom', 'http://www.w3.org/2005/Atom');
         $this->bindChannel($rss);
 
         $this->dom->appendChild($rss);
