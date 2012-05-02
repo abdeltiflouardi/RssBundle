@@ -1,0 +1,22 @@
+{
+  "name": "os/rss-bundle",
+  "description": "OS RSS Bundle for Symfony2",
+  "keywords": ["rss", "flux"],
+  "homepage": "http://github.com/ouardisoft/RssBundle",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "LOUARDI Abdeltif",
+      "email": "louardi.abdeltif@yahoo.fr",
+      "homepage": "http://phphub.net"
+    }
+  ],
+  "require": {
+    "php": ">=5.2.6"
+  },
+  "autoload": {
+      "psr-0": { "OS\\RssBundle": "" }
+  },
+  "target-dir": "OS/RssBundle"
+}
