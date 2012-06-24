@@ -56,7 +56,19 @@ class RssGenerator
     {
         $itemConfigs = $this->configs['item'];
 
-        $entities = $this->em->getRepository($itemConfigs['entity'])->findAll();
+        $dql = sprintf('SELECT %1$s FROM %2$s %1$s', $itemConfigs['alias'], $itemConfigs['entity']);     
+
+        if (!empty($itemConfigs['where'])) {
+            $dql .= ' WHERE ' . $itemConfigs['where'];
+        }
+
+        $query = $this->em->createQuery($dql);
+
+        if ($itemConfigs['limit']) {
+            $query->setMaxResults($itemConfigs['limit']);
+        }
+
+        $entities = $query->getResult();
 
         $itemTags = array('title', 'link', 'description', 'pubDate', 'guid');
         foreach ($entities as $entity) {
@@ -78,7 +90,8 @@ class RssGenerator
         $itemConfigs = $this->configs['item'];
 
         if (!is_array($itemConfigs[$tag])) {
-            $value = $entity->{'get' . ucfirst($itemConfigs[$tag])}();
+            $m = 'get' . ucfirst($itemConfigs[$tag]);
+            $value = $entity->{$m}();
 
             if ($value instanceof DateTime) {
                 $value = $value->format('r');
@@ -92,11 +105,13 @@ class RssGenerator
 
             foreach ($params as $key => $param) {
                 if (is_array($param)) {
-                    $value        = $entity->{'get' . ucfirst($param['field'])}();
+                    $m = 'get' . ucfirst($param['field']);
+                    $value        = $entity->{$m}();
                     $object       = new $param['class'];
                     $params[$key] = $object->{$param['method']}($value);
                 } else {
-                    $value        = $entity->{'get' . ucfirst($param)}();
+                    $m = 'get' . ucfirst($param);
+                    $value        = $entity->{$m}();
                     $params[$key] = $value;
                 }
             }

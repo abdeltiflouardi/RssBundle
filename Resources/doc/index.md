@@ -45,6 +45,9 @@ example
       link: www.phphub.net
       item:
         entity: AppCoreBundle:Post
+        alias: p
+        where: "p.active = 1"
+        limit: 10
         title: title
         description: body
         pubDate: updatedAt
